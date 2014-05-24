@@ -1,0 +1,23 @@
+{
+  "name": "nodebb-plugin-emailer-amazonses",
+  "version": "0.1.0",
+  "description": "nodebb-plugin-emailer-amazonses ===============================",
+  "main": "library.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kenokabe/nodebb-plugin-emailer-amazonses"
+  },
+  "author": "Ken OKABE",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kenokabe/nodebb-plugin-emailer-amazonses/issues"
+  },
+  "homepage": "https://github.com/kenokabe/nodebb-plugin-emailer-amazonses",
+  "dependencies": {
+        "nodemailer": "*",
+        "path": "*"
+  }
+}

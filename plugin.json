@@ -1,0 +1,12 @@
+{
+      "id": "nodebb-plugin-emailer-amazonses"
+    , "name": "nodeBB plugin emailer of AmazonSES"
+    , "description": ""
+    , "url": "https://github.com/kenokabe/nodebb-plugin-emailer-amazonses"
+    , "library": "./library.js"
+    , "hooks": [
+        { "hook": "action:app.load", "method": "init" },
+        { "hook": "filter:admin.header.build", "method": "admin.menu" },
+        { "hook": "action:email.send", "method": "send" }
+    ]
+}
