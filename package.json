@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/kenokabe/nodebb-plugin-emailer-amazonses",
   "dependencies": {
-        "nodemailer": "*",
-        "path": "*"
+        "aws-sdk": "*"
   }
 }

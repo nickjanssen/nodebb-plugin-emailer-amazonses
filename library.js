@@ -4,49 +4,57 @@ var fs = require('fs'),
     winston = module.parent.require('winston'),
     Meta = module.parent.require('./meta'),
 
-    nodemailer = require('nodemailer'),
-    Emailer = {};
+    Emailer = {},
+    ses;
 
-
-Emailer.init = function(app, middleware, controllers) {
-    function renderAdminPage(req, res, next) {
-        res.render('admin/emailers/amazonses', {});
+Emailer.init = function (app, middleware, controllers) {
+    function render(req, res, next) {
+        res.render('admin/plugins/emailer-amazonses', {});
     }
 
-    app.get('/admin/emailers/amazonses', middleware.admin.buildHeader, renderAdminPage);
-    app.get('/api/admin/emailers/amazonses', renderAdminPage);
+    var AWS = require('aws-sdk');
+    AWS.config.loadFromPath('./config.json');
+    ses = new AWS.SES({
+        apiVersion: '2010-12-01'
+    });
+
+    app.get('/admin/plugins/emailer-amazonses', middleware.admin.buildHeader, render);
+    app.get('/api/admin/plugins/emailer-amazonses', render);
 };
 
-Emailer.send = function(data) {
-    var transport = nodemailer.createTransport('SMTP',{
-        host: Meta.config['emailer:amazonses:host'],
-        port: Meta.config['emailer:amazonses:port'],
-        auth: {
-            user: Meta.config['emailer:amazonses:username'],
-            pass: Meta.config['emailer:amazonses:password'],
-        }
-    });
+Emailer.send = function (data) {
 
-    transport.sendMail({
-        from: data.from,
-        to: data.to,
-        html: data.html,
-        text: data.plaintext,
-        subject: data.subject
-    },function(err,response) {
-        if ( !err ) {
-            winston.info('[emailer.smtp] Sent `' + data.template + '` email to uid ' + data.uid);
-        } else {
-            winston.warn('[emailer.smtp] Unable to send `' + data.template + '` email to uid ' + data.uid + '!!');
-            // winston.error('[emailer.smtp] ' + response.message);
-        }
-    });
-}
+    ses.sendEmail({
+            Source: data.from,
+            Destination: {
+                ToAddresses: data.to
+            },
+            Message: {
+                Subject: {
+                    Data: data.subject
+                },
+                Body: {
+                    Text: {
+                        Data: data.plaintext,
+                    }
+                }
+            }
+        },
+        function (err, data) {
+            if (err) throw err;
+            console.log('Email sent:');
+            console.log(data);
+        });
+
+
+
+
+};
 
 Emailer.admin = {
-    menu: function(custom_header, callback) {
+    menu: function (custom_header, callback) {
         custom_header.plugins.push({
-            "route": '/emailers/amazonses',
+            "route": '/plugins/emailer-amazonses',
             "icon": 'fa-envelope-o',
             "name": 'Emailer (AmazonSES)'
         });
@@ -56,3 +64,4 @@ Emailer.admin = {
 };
 
 module.exports = Emailer;
+
