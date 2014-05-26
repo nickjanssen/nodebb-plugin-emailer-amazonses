@@ -1,25 +1,29 @@
-var fs = require('fs'),
-    path = require('path'),
-
-    winston = module.parent.require('winston'),
+var winston = module.parent.require('winston'),
     Meta = module.parent.require('./meta'),
 
     Emailer = {},
     ses;
 
-Emailer.init = function (app, middleware, controllers) {
-    function render(req, res, next) {
-        res.render('admin/plugins/emailer-amazonses', {});
-    }
+Emailer.init = function (app, middleware, controllers)
+{
+  console.log('===========emailer-amazonses init============');
+  var AWS = require('aws-sdk');
+  AWS.config.loadFromPath('./config.json');
+  ses = new AWS.SES({
+      apiVersion: '2010-12-01'
+  });
 
-    var AWS = require('aws-sdk');
-    AWS.config.loadFromPath('./config.json');
-    ses = new AWS.SES({
-        apiVersion: '2010-12-01'
-    });
+
+  /*
+    var render = function (req, res, next)
+    {
+        res.render('admin/plugins/emailer-amazonses', {});
+    };
 
     app.get('/admin/plugins/emailer-amazonses', middleware.admin.buildHeader, render);
     app.get('/api/admin/plugins/emailer-amazonses', render);
+
+    */
 };
 
 Emailer.send = function (data) {
@@ -45,9 +49,6 @@ Emailer.send = function (data) {
             console.log('Email sent:');
             console.log(data);
         });
-
-
-
 
 };
 
