@@ -3,7 +3,7 @@ nodebb-plugin-emailer-amazonses
 
 nodeBB plugin emailer of AmazonSES
 
-Add 'config.json'
+Add `config.json` for your AWS API key and SES server region.
 
 ```
 { "accessKeyId": "YOUR_AWS_API_ID",
