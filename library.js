@@ -2,7 +2,8 @@ var winston = module.parent.require('winston'),
     Meta = module.parent.require('./meta'),
 
     Emailer = {},
-    ses;
+    ses,
+    sender;
 
 Emailer.init = function (app, middleware, controllers)
 {
@@ -13,6 +14,22 @@ Emailer.init = function (app, middleware, controllers)
   ses = new AWS.SES({
       apiVersion: '2010-12-01'
   });
+
+
+  require('fs').readFile('./emailer-amazonses-sender.json', 'utf8', 
+   function (err, data) {
+  if (err) {
+    console.log('Error: ' + err);
+    return;
+  }
+ 
+  var obj1 = JSON.parse(data);
+ 
+  console.log(obj1);
+  sender = obj1.email;
+  console.log(sender);
+
+});
 
     var render = function (req, res, next)
     {
@@ -27,9 +44,9 @@ Emailer.init = function (app, middleware, controllers)
 Emailer.send = function (data) {
 
     ses.sendEmail({
-            Source: data.from,
+            Source: sender,
             Destination: {
-                ToAddresses: data.to
+                ToAddresses: [data.to]
             },
             Message: {
                 Subject: {
@@ -42,15 +59,14 @@ Emailer.send = function (data) {
                 }
             }
         },
-        function (err, data) {
-                if (!err) {
-			winston.info('[emailer.amazonses] Sent `' + data);
-		} else {
-			winston.warn('[emailer.amazonses] Unable to send `' + data);
-			winston.error('[emailer.amazonses] ' );
-		}
-
-        });
+               function (err, response) {
+			if (!err) {
+				winston.info('[emailer.amazonses] Sent `' + data.template + '` email to uid ' + data.uid);
+			} else {
+				winston.warn('[emailer.amazonses] Unable to send `' + data.template + '` email to uid ' + data.uid + '!!');
+				winston.warn('[emailer.amazonses] Error Stringified:' + JSON.stringify(err));
+			}
+		});
 
 };
 

@@ -21,6 +21,10 @@ Add `emailer-amazonses-config.json` file in nodebb-root-directory for your AWS-A
 { "accessKeyId": "YOUR_AWS_API_ID", <br>
   "secretAccessKey": "YOUR_SECRET", <br>
   "region": "us-west-2" }
+<br>
+Add `emailer-amazonses-sender.json` file in nodebb-root-directory to set email sender.
+<br>
+{ email: 'admin@somedomain.com' }
 
 
 	</div>
