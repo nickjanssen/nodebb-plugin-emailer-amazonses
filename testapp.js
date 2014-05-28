@@ -7,7 +7,7 @@
 "use strict";
 
     var AWS = require('aws-sdk');
-    AWS.config.loadFromPath('./config.json');
+    AWS.config.loadFromPath('../../emailer-amazonses-config.json');
     var ses = new AWS.SES({apiVersion: '2010-12-01'});
 
     // send to list
