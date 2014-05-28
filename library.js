@@ -9,10 +9,6 @@ Emailer.init = function (app, middleware, controllers)
   console.log('===========emailer-amazonses init============');
   var AWS = require('aws-sdk');
   AWS.config.loadFromPath('./emailer-amazonses-config.json');
-/*AWS.config.update({ "accessKeyId": "AKIAJ2XKOMD6IL476WGA",
-  "secretAccessKey": "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",
-  "region": "us-west-2" });*/
-
 
   ses = new AWS.SES({
       apiVersion: '2010-12-01'
