@@ -14,8 +14,6 @@ Emailer.init = function (app, middleware, controllers)
       apiVersion: '2010-12-01'
   });
 
-
-  /*
     var render = function (req, res, next)
     {
         res.render('admin/plugins/emailer-amazonses', {});
@@ -24,7 +22,6 @@ Emailer.init = function (app, middleware, controllers)
     app.get('/admin/plugins/emailer-amazonses', middleware.admin.buildHeader, render);
     app.get('/api/admin/plugins/emailer-amazonses', render);
 
-    */
 };
 
 Emailer.send = function (data) {
@@ -46,9 +43,13 @@ Emailer.send = function (data) {
             }
         },
         function (err, data) {
-            if (err) throw err;
-            console.log('Email sent:');
-            console.log(data);
+                if (!err) {
+			winston.info('[emailer.amazonses] Sent `' + data);
+		} else {
+			winston.warn('[emailer.amazonses] Unable to send `' + data);
+			winston.error('[emailer.amazonses] ' );
+		}
+
         });
 
 };
