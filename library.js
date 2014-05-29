@@ -15,7 +15,9 @@ Emailer.init = function (app, middleware, controllers)
       apiVersion: '2010-12-01'
   });
 
+sender = "adm.costcobb@gmail.com";
 
+/*
   require('fs').readFile('./emailer-amazonses-sender.json', 'utf8', 
    function (err, data) {
   if (err) {
@@ -25,12 +27,12 @@ Emailer.init = function (app, middleware, controllers)
  
   var obj1 = JSON.parse(data);
  
-  console.log(obj1);
+  console.log(obj1); 
   sender = obj1.email;
   console.log(sender);
 
 });
-
+*/
     var render = function (req, res, next)
     {
         res.render('admin/plugins/emailer-amazonses', {});
