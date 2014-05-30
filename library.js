@@ -15,7 +15,7 @@ Emailer.init = function (app, middleware, controllers)
       apiVersion: '2010-12-01'
   });
 
-sender = "adm.bbnode@gmail.com";
+sender = "admin@bbnode.net";
 
 /*
   require('fs').readFile('./emailer-amazonses-sender.json', 'utf8', 
