@@ -15,24 +15,16 @@ Emailer.init = function (app, middleware, controllers)
       apiVersion: '2010-12-01'
   });
 
-sender = "admin@bbnode.net";
+  require('fs').readFile('./emailer-amazonses-sender.json', 'utf8',
+    function (err, data) {
+      if (err) {
+        console.log('Error: ' + err);
+        return;
+      }
+      var json = JSON.parse(data);
+      sender = json.email;
+    });
 
-/*
-  require('fs').readFile('./emailer-amazonses-sender.json', 'utf8', 
-   function (err, data) {
-  if (err) {
-    console.log('Error: ' + err);
-    return;
-  }
- 
-  var obj1 = JSON.parse(data);
- 
-  console.log(obj1); 
-  sender = obj1.email;
-  console.log(sender);
-
-});
-*/
     var render = function (req, res, next)
     {
         res.render('admin/plugins/emailer-amazonses', {});
